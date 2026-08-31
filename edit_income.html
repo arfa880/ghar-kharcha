@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Income</title>
+</head>
+<body>
+    <h2>Change Income Details</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Source:</label><br>
+        <input type="text" name="source" value="{{ income.source }}" required><br><br>
+        
+        <label>Amount:</label><br>
+        <input type="number" name="amount" value="{{ income.amount }}" required><br><br>
+        
+        <label>Date:</label><br>
+        <input type="date" name="date" value="{{ income.date|date:'Y-m-d' }}" required><br><br>
+        
+        <button type="submit">Save Changes</button>
+        <a href="{% url 'income_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

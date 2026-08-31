@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses Page | Ghar Kharcha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc; --card-bg: #ffffff; --text-title: #0f172a; --text-body: #475569; --border: #e2e8f0; --accent: #6366f1; --danger: #ef4444; --success: #10b981; --input-bg: #f1f5f9;
+        }
+        body { background: var(--bg-main); color: var(--text-title); padding: 25px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .wrapper { max-width: 1000px; margin: 0 auto; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: var(--card-bg); padding: 18px 24px; border-radius: 16px; border: 1px solid var(--border); }
+        .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        th { font-weight: 700; color: var(--text-body); text-transform: uppercase; }
+        .btn { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; background: var(--accent); color: white; border: none; cursor: pointer; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="navbar">
+        <h2>📋 All Expenses List</h2>
+        <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr><th>Title</th><th>Category</th><th>Person</th><th>Amount</th><th>Date</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                {% for exp in expenses %}
+                <tr>
+                    <td style="font-weight: 700;">{{ exp.title }}</td>
+                    <td>{{ exp.category }}</td>
+                    <td>{{ exp.family_member.name|default:"Arfa (Self)" }}</td>
+                    <td style="color: var(--danger); font-weight: 800;">Rs. {{ exp.amount }}</td>
+                    <td>{{ exp.date }}</td>
+                    <td><a href="{% url 'delete_expense' exp.pk %}" style="color: var(--danger); font-weight: 700; text-decoration: none;">Delete</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">No expenses found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

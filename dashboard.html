@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghar Kharcha Pro | Arfa Edition</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-title: #0f172a;
+            --text-body: #475569;
+            --border: #e2e8f0;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --input-bg: #f1f5f9;
+            --shadow: 0 10px 30px -5px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode {
+            --bg-main: #0b0f19;
+            --card-bg: #151c2c;
+            --text-title: #f8fafc;
+            --text-body: #94a3b8;
+            --border: #1e293b;
+            --input-bg: #0b0f19;
+            --shadow: 0 10px 30px -5px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s ease; }
+        body { background: var(--bg-main); color: var(--text-title); padding: 25px; }
+        .wrapper { max-width: 1300px; margin: 0 auto; }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; background: var(--card-bg); padding: 18px 24px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .brand { font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 8px; color: var(--accent); }
+        .badge { background: linear-gradient(135deg, var(--accent), var(--purple)); color: white; font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; }
+        
+        .nav-items { display: flex; gap: 20px; }
+        .nav-items a { text-decoration: none; color: var(--text-body); font-weight: 600; font-size: 0.9rem; }
+        .nav-items a:hover, .nav-items a.active { color: var(--accent); }
+
+        .btn-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .btn { padding: 9px 16px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-outline { background: var(--input-bg); color: var(--text-title); border: 1px solid var(--border); }
+        .btn-primary { background: var(--accent); color: white; }
+
+        .filter-bar { background: var(--card-bg); padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 25px; }
+        .filter-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: center; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 25px; }
+        .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .card-title { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-body); letter-spacing: 0.5px; }
+        .card-value { font-size: 1.7rem; font-weight: 800; margin-top: 8px; }
+
+        .progress-bg { background: var(--input-bg); height: 8px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 10px; background: var(--accent); }
+
+        .ai-card { background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1)); border: 1px solid var(--accent); padding: 20px; border-radius: 16px; margin-bottom: 25px; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        @media(max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+        .actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .form-card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .form-card h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; }
+        
+        label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-body); margin: 8px 0 4px; }
+        input, select { width: 100%; padding: 10px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text-title); border-radius: 8px; outline: none; font-size: 0.85rem; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        th { font-weight: 700; color: var(--text-body); text-transform: uppercase; font-size: 0.7rem; }
+
+        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; width: 56px; height: 56px; border-radius: 50%; font-size: 26px; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(99,102,241,0.4); }
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); align-items:center; justify-content:center; z-index: 1000; }
+        .modal-body { background: var(--card-bg); padding: 25px; border-radius: 20px; width: 90%; max-width: 420px; border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">
+            🏡 GHAR KHARCHA <span class="badge">ARFA ULTIMATE</span>
+        </div>
+        <div class="nav-items">
+            <a href="{% url 'dashboard' %}" class="active">Dashboard</a>
+            <a href="{% url 'expense_list' %}">Expenses Page</a>
+            <a href="{% url 'income_list' %}">Income Page</a>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-outline" onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</button>
+            <a href="{% url 'backup_data' %}" class="btn btn-outline">💾 Backup</a>
+            <a href="{% url 'export_csv' %}" class="btn btn-outline">📥 CSV</a>
+            <a href="{% url 'export_pdf' %}" class="btn btn-primary">📄 PDF Report</a>
+        </div>
+    </div>
+
+    <!-- Multi Filter System -->
+    <div class="filter-bar">
+        <form class="filter-form" method="GET" action="{% url 'dashboard' %}">
+            <input type="text" name="search" placeholder="🔍 Search..." value="{{ search_query }}">
+            <select name="category">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat }}" {% if category_filter == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+            <select name="family_member">
+                <option value="">All Family Members</option>
+                {% for member in family_members %}
+                    <option value="{{ member.id }}" {% if family_filter == member.id|stringformat:"i" %}selected{% endif %}>{{ member.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" name="start_date" value="{{ start_date }}">
+            <input type="date" name="end_date" value="{{ end_date }}">
+            <button type="submit" class="btn btn-primary">Apply</button>
+        </form>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="card">
+            <div class="card-title">Total Income</div>
+            <div class="card-value" style="color: var(--success);">Rs. {{ total_income }}</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Total Expense</div>
+            <div class="card-value" style="color: var(--danger);">Rs. {{ total_expense }}</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Net Balance (Arfa)</div>
+            <div class="card-value" style="color: var(--accent);">Rs. {{ remaining_balance }}</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Savings Target</div>
+            <div class="card-value" style="color: var(--warning);">{{ savings_progress }}%</div>
+            <div class="progress-bg"><div class="progress-fill" style="width: {{ savings_progress }}%;"></div></div>
+        </div>
+    </div>
+
+    <!-- AI Smart Predictor -->
+    <div class="ai-card">
+        <h4 style="color: var(--accent); font-size: 1rem; margin-bottom: 8px;">🤖 AI Smart Predictor & Insights</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 6px;"><strong>Predicted Monthly Expense:</strong> Rs. {{ predicted_monthly_expense }}</p>
+        {% for tip in smart_tips %}
+            <p style="font-size: 0.85rem; color: var(--text-body);">• {{ tip }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- Meal Planner & Category Progress -->
+    <div class="two-col">
+        <div class="card">
+            <h4 style="margin-bottom: 12px; color: var(--purple);">🍱 Weekly Meal & Grocery Planner (Rs. {{ total_meal_cost }})</h4>
+            <form method="POST" action="{% url 'add_meal_plan' %}" style="display: flex; gap: 8px; margin-bottom: 15px;">
+                {% csrf_token %}
+                <select name="day" style="flex: 1;">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+                <input type="text" name="meal_name" placeholder="Dish Name" required style="flex: 2;">
+                <input type="number" step="0.01" name="estimated_cost" placeholder="Cost" style="flex: 1;">
+                <button type="submit" class="btn btn-primary" style="background: var(--purple);">Add</button>
+            </form>
+            <table>
+                <thead><tr><th>Day</th><th>Meal</th><th>Cost</th><th>Action</th></tr></thead>
+                <tbody>
+                    {% for meal in meals %}
+                    <tr>
+                        <td style="font-weight: 700;">{{ meal.day }}</td>
+                        <td>{{ meal.meal_name }}</td>
+                        <td style="color: var(--purple); font-weight: 700;">Rs. {{ meal.estimated_cost }}</td>
+                        <td><a href="{% url 'delete_meal_plan' meal.pk %}" style="color: var(--danger); font-weight: 700; text-decoration: none;">Delete</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No meal plans added yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h4 style="margin-bottom: 12px; color: var(--accent);">📊 Visual Category Budget Tracker</h4>
+            {% for item in budget_progress_list %}
+            <div style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700;">
+                    <span>{{ item.category }}</span>
+                    <span>Rs. {{ item.spent }} / {{ item.limit }} ({{ item.percentage }}%)</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: {{ item.percentage }}%; background: {% if item.percentage > 90 %}var(--danger){% else %}var(--accent){% endif %};"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Debt Manager & Shopping Wishlist -->
+    <div class="two-col">
+        <!-- Debt / Khata Tracker -->
+        <div class="card">
+            <h4 style="margin-bottom: 12px; color: var(--danger);">🤝 Udhaar & Debt Manager (Khata)</h4>
+            <div style="background: var(--input-bg); padding: 12px; border-radius: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem; border: 1px solid var(--border);">
+                <span>Lene Hain Total: <span style="color: var(--success);">Rs. {{ total_give }}</span></span>
+                <span>Dene Hain Total: <span style="color: var(--danger);">Rs. {{ total_take }}</span></span>
+            </div>
+            <form method="POST" action="{% url 'add_debt' %}" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
+                {% csrf_token %}
+                <input type="text" name="person_name" placeholder="Person Name" required>
+                <input type="number" step="0.01" name="amount" placeholder="Amount (Rs)" required>
+                <select name="debt_type">
+                    <option value="GIVE">Lene Hain (Receive)</option>
+                    <option value="TAKE">Dene Hain (Pay)</option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="background: var(--danger);">Add Udhaar</button>
+            </form>
+            <table>
+                <thead><tr><th>Person</th><th>Type</th><th>Amount</th><th>Action</th></tr></thead>
+                <tbody>
+                    {% for d in debts %}
+                    <tr>
+                        <td style="font-weight: 700;">{{ d.person_name }}</td>
+                        <td>
+                            {% if d.debt_type == 'GIVE' %}
+                                <span style="color: var(--success); font-weight:700;">Lene Hain</span>
+                            {% else %}
+                                <span style="color: var(--danger); font-weight:700;">Dene Hain</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-weight: 800;">Rs. {{ d.amount }}</td>
+                        <td><a href="{% url 'delete_debt' d.pk %}" style="color: var(--danger); font-weight: 700; text-decoration: none;">Delete</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No udhaar records added.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Shopping Wishlist -->
+        <div class="card">
+            <h4 style="margin-bottom: 12px; color: var(--warning);">🛍️ Shopping & Grocery Wishlist</h4>
+            <form method="POST" action="{% url 'add_wishlist' %}" style="display: flex; gap: 8px; margin-bottom: 15px;">
+                {% csrf_token %}
+                <input type="text" name="item_name" placeholder="Item Name" required style="flex:2;">
+                <input type="number" step="0.01" name="estimated_cost" placeholder="Est. Cost" required style="flex:1;">
+                <button type="submit" class="btn btn-primary" style="background: var(--warning);">Add Wish</button>
+            </form>
+            <table>
+                <thead><tr><th>Item</th><th>Est. Cost</th><th>Action</th></tr></thead>
+                <tbody>
+                    {% for item in wishlist %}
+                    <tr>
+                        <td style="font-weight: 700;">{{ item.item_name }}</td>
+                        <td style="color: var(--warning); font-weight: 800;">Rs. {{ item.estimated_cost }}</td>
+                        <td><a href="{% url 'delete_wishlist' item.pk %}" style="color: var(--danger); font-weight: 700; text-decoration: none;">Delete</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3">Wishlist empty.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Analytics Charts -->
+    <div class="two-col">
+        <div class="card">
+            <h4 style="margin-bottom: 15px;">📊 Spending Trend</h4>
+            <canvas id="lineChart" height="120"></canvas>
+        </div>
+        <div class="card">
+            <h4 style="margin-bottom: 15px;">🍕 Category Breakdown</h4>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Action Forms -->
+    <div class="actions-grid">
+        <div class="form-card">
+            <h4 style="color: var(--accent);">➕ Custom Category</h4>
+            <form method="POST" action="{% url 'add_category' %}">
+                {% csrf_token %}
+                <label>Category Name</label>
+                <input type="text" name="name" required placeholder="e.g. Medical">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Add Category</button>
+            </form>
+        </div>
+
+        <div class="form-card">
+            <h4 style="color: var(--purple);">👨‍👩‍👧 Family Member</h4>
+            <form method="POST" action="{% url 'add_family_member' %}">
+                {% csrf_token %}
+                <label>Name</label>
+                <input type="text" name="name" required>
+                <label>Relation</label>
+                <input type="text" name="relation">
+                <button type="submit" class="btn btn-primary" style="background: var(--purple); width: 100%; margin-top: 8px;">Save</button>
+            </form>
+        </div>
+
+        <div class="form-card">
+            <h4 style="color: var(--success);">💵 Income</h4>
+            <form method="POST" action="{% url 'income_list' %}">
+                {% csrf_token %}
+                <label>Source</label>
+                <input type="text" name="source" required>
+                <label>Amount (Rs)</label>
+                <input type="number" step="0.01" name="amount" required>
+                <label>Date</label>
+                <input type="date" name="date" required>
+                <button type="submit" class="btn btn-primary" style="background: var(--success); width: 100%; margin-top: 8px;">Save</button>
+            </form>
+        </div>
+
+        <div class="form-card">
+            <h4 style="color: var(--warning);">🎯 Savings Goal</h4>
+            <form method="POST" action="{% url 'set_savings_goal' %}">
+                {% csrf_token %}
+                <label>Target Amount (Rs)</label>
+                <input type="number" step="0.01" name="target_amount" required>
+                <button type="submit" class="btn btn-primary" style="background: var(--warning); width: 100%; margin-top: 8px;">Set Goal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expense Table -->
+    <div class="card" style="margin-bottom: 30px;">
+        <h4 style="margin-bottom: 15px;">📋 Transactions History</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Person</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exp in expenses %}
+                <tr>
+                    <td style="font-weight: 700;">{{ exp.title }}</td>
+                    <td><span style="color: var(--accent); font-weight: 600;">{{ exp.category }}</span></td>
+                    <td>
+                        {% if exp.family_member %}
+                            <span style="color: var(--purple); font-weight: 700;">{{ exp.family_member.name }}</span>
+                        {% else %}
+                            <span style="color: var(--text-body);">Arfa (Self)</span>
+                        {% endif %}
+                    </td>
+                    <td style="color: var(--danger); font-weight: 800;">Rs. {{ exp.amount }}</td>
+                    <td>{{ exp.date }}</td>
+                    <td><a href="{% url 'delete_expense' exp.pk %}" style="color: var(--danger); font-weight: 700; text-decoration: none;">Delete</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">No records found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<button class="fab" onclick="openModal()">+</button>
+
+<div class="modal" id="modal">
+    <div class="modal-body">
+        <h3 style="margin-bottom: 15px;">⚡ Quick Add Expense</h3>
+        <form method="POST" action="{% url 'expense_list' %}">
+            {% csrf_token %}
+            <label>Title</label>
+            <input type="text" name="title" required>
+            <label>Category</label>
+            <select name="category">
+                {% for cat in categories %}<option value="{{ cat }}">{{ cat }}</option>{% endfor %}
+            </select>
+            <label>Who Spent This?</label>
+            <select name="family_member">
+                <option value="">Arfa (Self)</option>
+                {% for member in family_members %}<option value="{{ member.id }}">{{ member.name }}</option>{% endfor %}
+            </select>
+            <label>Amount (Rs)</label>
+            <input type="number" step="0.01" name="amount" required>
+            <label>Date</label>
+            <input type="date" name="date" required>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button type="submit" class="btn btn-primary" style="flex:1;">Save</button>
+                <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal() { document.getElementById('modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.getElementById('themeBtn');
+        if(document.body.classList.contains('dark-mode')) {
+            btn.innerHTML = '☀️ Light Mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            btn.innerHTML = '🌙 Dark Mode';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    if(localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeBtn').innerHTML = '☀️ Light Mode';
+    }
+
+    const chartLabels = {{ chart_labels|safe }};
+    const chartData = {{ chart_data|safe }};
+
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Expenses (Rs)',
+                data: chartData,
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('pieChart'), {
+        type: 'doughnut',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                data: chartData,
+                backgroundColor: ['#6366f1', '#ef4444', '#8b5cf6', '#f59e0b', '#10b981', '#64748b', '#ec4899']
+            }]
+        }
+    });
+</script>
+</body>
+</html>
